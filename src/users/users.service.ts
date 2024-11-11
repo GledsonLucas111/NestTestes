@@ -24,15 +24,26 @@ export class UsersService {
   }
 
   findAll() {
-    return `This action returns all users`;
+    return this.users;
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} user`;
+    const findUserById: User = this.users.find((user) => user.id === id);
+
+    return findUserById;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    const user: User = this.findOne(id);
+
+    const newUser = {
+      ...user,
+      ...updateUserDto,
+    };
+    const index = this.users.indexOf(user);
+    this.users[index] = newUser;
+
+    return newUser;
   }
 
   remove(id: number) {
