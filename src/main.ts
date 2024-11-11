@@ -1,10 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { EntityNotFoundInterceptor } from './interceptors/entity-not-found.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  // PIPES
+  // Pipes
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -12,6 +13,9 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
+  // Interceptor
+  app.useGlobalInterceptors(new EntityNotFoundInterceptor());
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
